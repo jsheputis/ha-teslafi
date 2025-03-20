@@ -255,8 +255,8 @@ SENSORS = [
         entity_category=EntityCategory.DIAGNOSTIC,
         entity_registry_enabled_default=True,
         # fix_unit=lambda d, h: TeslaFiTirePressure.convert_unit(d.tpms.unit),
-        value=lambda d, h: d.tesla_request_counter.commands,
-        available=lambda u, d, h: u and d.tesla_request_counter.commands,
+        value=lambda d, h: d.api_requests.commands,
+        available=lambda u, d, h: u and d.api_requests.commands,
     ),
     # # endregion
 ]
