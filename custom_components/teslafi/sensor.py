@@ -246,18 +246,18 @@ SENSORS = [
         available=lambda u, d, h: u and d.tpms.rear_right,
     ),
     # endregion
-    # # region TeslaFi API Counts
-    #     TeslaFiSensorEntityDescription(
-    #     key="commands",
-    #     name="TeslaFi API Commands",
-    #     icon="mdi:counter",
-    #     # native_unit_of_measurement=UnitOfPressure.PSI,
-    #     entity_category=EntityCategory.DIAGNOSTIC,
-    #     entity_registry_enabled_default=True,
-    #     # fix_unit=lambda d, h: TeslaFiTirePressure.convert_unit(d.tpms.unit),
-    #     value=lambda d, h: d.tesla_request_counter.commands,
-    #     available=lambda u, d, h: u and d.tesla_request_counter.commands,
-    # ),
+    # region TeslaFi API Counts
+        TeslaFiSensorEntityDescription(
+        key="commands",
+        name="TeslaFi API Commands",
+        icon="mdi:counter",
+        # native_unit_of_measurement=UnitOfPressure.PSI,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=True,
+        # fix_unit=lambda d, h: TeslaFiTirePressure.convert_unit(d.tpms.unit),
+        value=lambda d, h: d.tesla_request_counter.commands,
+        available=lambda u, d, h: u and d.tesla_request_counter.commands,
+    ),
     # # endregion
 ]
 
