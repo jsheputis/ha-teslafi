@@ -83,6 +83,7 @@ class TeslaFiEntity(TeslaFiBaseEntity, Generic[_BaseEntityDescriptionT]):
         return super().available
 
     def _get_value(self) -> StateType:
+        LOGGER.debug("getting value for.... all data %s" % self)
         LOGGER.debug("getting value for %s", self.entity_description.key)
         upstream = self.entity_description.value(self.coordinator.data, self.hass)
         converted = self.entity_description.convert(upstream)
