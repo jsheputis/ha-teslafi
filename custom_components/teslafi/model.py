@@ -246,6 +246,7 @@ class TeslaFiVehicle(UserDict):
 
     @property
     def tpms(self) -> TeslaFiTirePressure:
+        LOGGER.info("Self data: %s", self)
         """TPMS state(s): (front-left, front-right, rear-left, rear-right)."""
         return TeslaFiTirePressure(
             front_left=(
