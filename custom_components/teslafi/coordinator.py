@@ -132,11 +132,12 @@ class TeslaFiCoordinator(DataUpdateCoordinator[TeslaFiVehicle]):
                 )
                 self._last_charge_reset = current.last_remote_update
                 
-    async def _update_command_request_counts(
+    def _update_command_request_counts(
         self,
         response: dict
     ) -> None:
         """Update request counts."""
+        LOGGER.debug("Updating vehicle data with request counts: %s", response)
         if response and (request_counts := response.get("tesla_request_counter")):
             self._vehicle.update_non_empty(response)
             LOGGER.debug("Updated vehicle data with request counts %s: %s", (request_counts, self._vehicle))
