@@ -52,7 +52,7 @@ class TeslaFiCoordinator(DataUpdateCoordinator[TeslaFiVehicle]):
             kwargs["wake"] = DELAY_CMD_WAKE.seconds
 
         response = await self._client.command(cmd, **kwargs)
-        self._update_command_request_counts(response)
+        await self._update_command_request_counts(response)
         
         return response
 
@@ -132,7 +132,7 @@ class TeslaFiCoordinator(DataUpdateCoordinator[TeslaFiVehicle]):
                 )
                 self._last_charge_reset = current.last_remote_update
                 
-    def _update_command_request_counts(
+    async def _update_command_request_counts(
         self,
         response: dict
     ) -> None:
