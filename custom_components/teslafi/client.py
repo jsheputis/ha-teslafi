@@ -81,8 +81,8 @@ class TeslaFiClient:
                 raise PermissionError(
                     f"TeslaFi response unauthorized for api key {self._api_key}: {data}"
                 )
-            if tesla_request_counter := response.get("tesla_request_counter", {}):
-                # TODO: Implement command wake count here
+            if tesla_request_counter := data.get("tesla_request_counter", {}):
+                # TODO: Implement command wake count here or remove this
                 _LOGGER.debug(
                     "TeslaFi API request counts: %s",
                     tesla_request_counter,
