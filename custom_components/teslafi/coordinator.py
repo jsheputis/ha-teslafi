@@ -97,6 +97,8 @@ class TeslaFiCoordinator(DataUpdateCoordinator[TeslaFiVehicle]):
         
         api_requests = await self._client.request_counts()
         self._vehicle.update_non_empty(api_requests)
+        LOGGER.debug("API Request counts updated %s", self._vehicle.api_requests)
+
 
         assert current.vin
         assert self._vehicle.vin
