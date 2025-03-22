@@ -94,6 +94,9 @@ class TeslaFiCoordinator(DataUpdateCoordinator[TeslaFiVehicle]):
 
         self._vehicle.update_non_empty(current)
         LOGGER.debug("Remote data last updated %s", self._vehicle.last_remote_update)
+        
+        api_requests = await self._client.request_counts()
+        self._vehicle.update_non_empty(api_requests)
 
         assert current.vin
         assert self._vehicle.vin
@@ -143,6 +146,5 @@ class TeslaFiCoordinator(DataUpdateCoordinator[TeslaFiVehicle]):
             self._vehicle.update_non_empty(response.get("tesla_request_counter"))
             LOGGER.debug("Vehicle info: %s", self._vehicle)
             LOGGER.debug("Updated vehicle data with request counts %s: %s", request_counts, self._vehicle)
-            await self._refresh()
         else:
             LOGGER.warning("No request counts included from command response")
