@@ -55,6 +55,8 @@ class TeslaFiClient:
             params={"command": command} | kwargs,
             timeout=timeout,
         )
+        _LOGGER.debug("HELLO JAMES 1")
+
         _LOGGER.debug(
             "<< command %s response[%d]: %s",
             command,
