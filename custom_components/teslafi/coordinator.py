@@ -140,7 +140,7 @@ class TeslaFiCoordinator(DataUpdateCoordinator[TeslaFiVehicle]):
         LOGGER.debug("  with request counts: %s", response)
         if response and (request_counts := response.get("tesla_request_counter")):
             LOGGER.debug("About to call update_non_empty with request counts %s", request_counts)
-            self._vehicle.update_non_empty(response)
+            self._vehicle.update_non_empty(response.get("tesla_request_counter"))
             LOGGER.debug("Vehicle info: %s", self._vehicle)
             LOGGER.debug("Updated vehicle data with request counts %s: %s", request_counts, self._vehicle)
         else:

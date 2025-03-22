@@ -282,11 +282,11 @@ class TeslaFiVehicle(UserDict):
     @property
     def api_requests(self) -> TeslaFiApiRequests:
         """API requests."""
-        if not self.get('tesla_request_counter'):
-            LOGGER.debug("MEOW MEOW MEOW")
-            return TeslaFiApiRequests(commands=None, wakes=None)
+        LOGGER.debug("MEOW MEOW MEOW %s", self)
+        # if not self.get('tesla_request_counter'):
+        #     return TeslaFiApiRequests(commands=None, wakes=None)
         
         return TeslaFiApiRequests(
-            commands=_int_or_none(self.get('tesla_request_counter').get("api_commands", None)),
-            wakes=_int_or_none(self.get('tesla_request_counter').get("api_wakeups", None)),
+            commands=_int_or_none(self.get("api_commands", None)),
+            wakes=_int_or_none(self.get("api_wakeups", None)),
         )
