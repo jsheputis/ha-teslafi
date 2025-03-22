@@ -287,6 +287,6 @@ class TeslaFiVehicle(UserDict):
         #     return TeslaFiApiRequests(commands=None, wakes=None)
         
         return TeslaFiApiRequests(
-            commands=_int_or_none(self.get("api_commands", None)),
-            wakes=_int_or_none(self.get("api_wakeups", None)),
+            commands=_int_or_none(self.get("commands", None)),
+            wakes=_int_or_none(self.get("wakes", None)),
         )
