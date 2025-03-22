@@ -93,8 +93,6 @@ class TeslaFiCoordinator(DataUpdateCoordinator[TeslaFiVehicle]):
         self._vehicle.update_non_empty(last_good)
         
         current = await self._client.current_data()
-        if (current.get("is_climate_on")) is None:
-            current["is_climate_on"] = False
 
         self._infer_charge_session(prev=self.data, current=current)
         self._vehicle.update_non_empty(current)
