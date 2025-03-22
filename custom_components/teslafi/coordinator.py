@@ -53,7 +53,7 @@ class TeslaFiCoordinator(DataUpdateCoordinator[TeslaFiVehicle]):
 
         response = await self._client.command(cmd, **kwargs)
         await self._update_command_request_counts(response)
-        
+        await self.async_request_refresh()        
         return response
 
     def schedule_refresh_in(self, delta: timedelta):
