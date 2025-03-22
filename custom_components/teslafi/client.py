@@ -34,6 +34,12 @@ class TeslaFiClient:
         """
         Return last data point with charge data
         """
+        return TeslaFiVehicle(await self._request("lastGood"))
+    
+    async def current_data(self) -> TeslaFiVehicle:
+        """
+        Return last data point with charge data
+        """
         return TeslaFiVehicle(await self._request(""))
 
     async def command(self, cmd: str, **kwargs) -> dict:
