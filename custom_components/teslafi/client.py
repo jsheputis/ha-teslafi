@@ -61,8 +61,10 @@ class TeslaFiClient:
             response.status_code,
             response.text,
         )
+        _LOGGER.debug("HELLO JAMES")
         
         assert response.status_code < 400
+        _LOGGER.debug("BYE JAMES")
 
         try:
             data = response.json()
