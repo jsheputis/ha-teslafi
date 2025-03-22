@@ -87,7 +87,7 @@ class TeslaFiClimate(TeslaFiEntity[TeslaFiClimateEntityDescription], ClimateEnti
             float(temp) if (temp := self.coordinator.data.get("inside_temp")) else None
         )
 
-        is_on = IS_CLIMATE_ON_STATES.get(str(self.coordinator.data.get("is_climate_on", "None"), "None"))
+        is_on = IS_CLIMATE_ON_STATES.get(str(self.coordinator.data.get("is_climate_on", "None")), None)
 
         new_mode = None if is_on is None else HVACMode.AUTO if is_on else HVACMode.OFF
         want_mode = self._pending_mode
