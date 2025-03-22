@@ -143,5 +143,6 @@ class TeslaFiCoordinator(DataUpdateCoordinator[TeslaFiVehicle]):
             self._vehicle.update_non_empty(response.get("tesla_request_counter"))
             LOGGER.debug("Vehicle info: %s", self._vehicle)
             LOGGER.debug("Updated vehicle data with request counts %s: %s", request_counts, self._vehicle)
+            await self._refresh()
         else:
             LOGGER.warning("No request counts included from command response")
