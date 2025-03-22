@@ -53,6 +53,8 @@ class TeslaFiCoordinator(DataUpdateCoordinator[TeslaFiVehicle]):
 
         response = await self._client.command(cmd, **kwargs)
         await self._update_command_request_counts(response)
+        
+        # Force update HA antity data after command execution
         await self.async_request_refresh()        
         return response
 
@@ -142,11 +144,7 @@ class TeslaFiCoordinator(DataUpdateCoordinator[TeslaFiVehicle]):
         response: dict
     ) -> None:
         """Update request counts."""
-        LOGGER.debug("  with request counts: %s", response)
         if response and (request_counts := response.get("tesla_request_counter")):
-            LOGGER.debug("About to call update_non_empty with request counts %s", request_counts)
-            self._vehicle.update_non_empty(response.get("tesla_request_counter"))
-            LOGGER.debug("Vehicle info: %s", self._vehicle)
-            LOGGER.debug("Updated vehicle data with request counts %s: %s", request_counts, self._vehicle)
+            self._vehicle.update_non_empty(request_counts)
         else:
             LOGGER.warning("No request counts included from command response")

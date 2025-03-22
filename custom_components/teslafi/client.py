@@ -40,8 +40,10 @@ class TeslaFiClient:
         """
         Return the TeslaFi API command/wakes counts
         """
-        response = await self._request("flash_lights", noWake="true")
         
+        # TODO: Call appropriate TeslaFi API command to retrieve request counts
+        # response = await self._request("flash_lights", noWake="true")
+        response = {}
         return TeslaFiVehicle(response.get("tesla_request_counter", {}))
 
     async def command(self, cmd: str, **kwargs) -> dict:
@@ -63,7 +65,6 @@ class TeslaFiClient:
             params={"command": command} | kwargs,
             timeout=timeout,
         )
-        _LOGGER.debug("HELLO JAMES 1")
 
         _LOGGER.debug(
             "<< command %s response[%d]: %s",
@@ -71,15 +72,12 @@ class TeslaFiClient:
             response.status_code,
             response.text,
         )
-        _LOGGER.debug("HELLO JAMES")
         
         assert response.status_code < 400
-        _LOGGER.debug("BYE JAMES")
 
         try:
             data = response.json()
         except JSONDecodeError as exc:
-            _LOGGER.debug("Command: %s -- raising error: %s" % (command, exc))
             if response.text.startswith("This command is not enabled"):
                 raise PermissionError(response.text)
             if response.text.startswith("Vehicle is asleep or unavailable"):
@@ -101,8 +99,7 @@ class TeslaFiClient:
                     "TeslaFi API request counts: %s",
                     tesla_request_counter,
                 )
-            if 'noWake' not in kwargs and not response.get("result", True):
-                _LOGGER.debug("Command: %s -- NOT RESULT TRUE %s" % (command, response))
+            if not response.get("result", True):
                 msg = (
                     response.get("reason")
                     or response.get("string")
