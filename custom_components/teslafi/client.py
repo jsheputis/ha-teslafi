@@ -40,7 +40,9 @@ class TeslaFiClient:
         """
         Return the TeslaFi API command/wakes counts
         """
-        return TeslaFiVehicle(await self._request("flash_lights", noWake="true").get("tesla_request_counter", {}))
+        response = await self._request("flash_lights", noWake="true")
+        
+        return TeslaFiVehicle(response.get("tesla_request_counter", {}))
 
     async def command(self, cmd: str, **kwargs) -> dict:
         """
@@ -99,7 +101,7 @@ class TeslaFiClient:
                     "TeslaFi API request counts: %s",
                     tesla_request_counter,
                 )
-            if not response.get("result", True):
+            if 'noWake' not in kwargs and not response.get("result", True):
                 _LOGGER.debug("Command: %s -- NOT RESULT TRUE %s" % (command, response))
                 msg = (
                     response.get("reason")
