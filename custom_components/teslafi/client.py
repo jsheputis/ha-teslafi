@@ -61,11 +61,13 @@ class TeslaFiClient:
             response.status_code,
             response.text,
         )
+        
         assert response.status_code < 400
 
         try:
             data = response.json()
         except JSONDecodeError as exc:
+            _LOGGER.debug("Command: %s -- raising error: %s" % (command, exc))
             if response.text.startswith("This command is not enabled"):
                 raise PermissionError(response.text)
             if response.text.startswith("Vehicle is asleep or unavailable"):
@@ -93,6 +95,7 @@ class TeslaFiClient:
                     or response.get("string")
                     or f"Unexpected response: {data}"
                 )
+                _LOGGER.debug("Command: %s -- raising error: %s" % (command, msg))
                 raise TeslaFiApiError(msg)
-        print("Command: %s -- returning response" % command)
+        _LOGGER.debug("Command: %s -- returning response" % command)
         return data
