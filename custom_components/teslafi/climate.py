@@ -205,12 +205,14 @@ class TeslaFiClimate(TeslaFiEntity[TeslaFiClimateEntityDescription], ClimateEnti
             # but we originally reported it in C
             # So if the TeslaFi API reports F is preferred,
             # we have to convert it before sending.
-            if self.coordinator.data.get("temperature", "C") == "F":
-                temperature = TemperatureConverter.convert(
-                    temperature,
-                    from_unit=UnitOfTemperature.CELSIUS,
-                    to_unit=UnitOfTemperature.FAHRENHEIT,
-                )
+            
+            # Note: As of 2025-03-22 it is not respecting the user's preferred units
+            # if self.coordinator.data.get("temperature", "C") == "F":
+            #     temperature = TemperatureConverter.convert(
+            #         temperature,
+            #         from_unit=UnitOfTemperature.CELSIUS,
+            #         to_unit=UnitOfTemperature.FAHRENHEIT,
+            #     )
             await self.coordinator.execute_command("set_temps", temp=temperature)
             self.async_write_ha_state()
             self._refresh_soon()
