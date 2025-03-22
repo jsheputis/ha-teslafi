@@ -64,7 +64,6 @@ class TeslaFiVehicle(UserDict):
     """TeslaFi Vehicle Data"""
 
     def update_non_empty(self, data) -> None:
-        LOGGER.debug("Updating TeslaFiVehicle with data: %s", data)
         """Update this object with non-empty data from `data`."""
         if not self.data:
             # Start out with all fields

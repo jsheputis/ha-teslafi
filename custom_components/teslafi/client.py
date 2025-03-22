@@ -41,7 +41,7 @@ class TeslaFiClient:
         Return the TeslaFi API command/wakes counts
         """
         
-        # TODO: Call appropriate TeslaFi API command to retrieve request counts
+        # TODO: Call appropriate TeslaFi API command to retrieve request counts when available
         # response = await self._request("flash_lights", noWake="true")
         response = {}
         return TeslaFiVehicle(response.get("tesla_request_counter", {}))
@@ -65,14 +65,12 @@ class TeslaFiClient:
             params={"command": command} | kwargs,
             timeout=timeout,
         )
-
         _LOGGER.debug(
             "<< command %s response[%d]: %s",
             command,
             response.status_code,
             response.text,
         )
-        
         assert response.status_code < 400
 
         try:
@@ -93,19 +91,11 @@ class TeslaFiClient:
                 raise PermissionError(
                     f"TeslaFi response unauthorized for api key {self._api_key}: {data}"
                 )
-            if tesla_request_counter := data.get("tesla_request_counter", {}):
-                # TODO: Implement command wake count here or remove this
-                _LOGGER.debug(
-                    "TeslaFi API request counts: %s",
-                    tesla_request_counter,
-                )
             if not response.get("result", True):
                 msg = (
                     response.get("reason")
                     or response.get("string")
                     or f"Unexpected response: {data}"
                 )
-                _LOGGER.debug("Command: %s -- raising error: %s" % (command, msg))
                 raise TeslaFiApiError(msg)
-        _LOGGER.debug("Command: %s -- returning response" % command)
         return data
