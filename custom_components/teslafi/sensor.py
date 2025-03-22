@@ -265,7 +265,7 @@ SENSORS = [
         value=lambda d, h: d.api_requests.wakes,
         available=lambda u, d, h: u and d.api_requests.wakes,
     ),
-    # # endregion
+    # endregion
 ]
 
 

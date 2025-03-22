@@ -98,5 +98,5 @@ class TeslaFiClient:
                     or f"Unexpected response: {data}"
                 )
                 raise TeslaFiApiError(msg)
-            
+
         return data
