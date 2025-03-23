@@ -42,11 +42,21 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     
     return True
 
-async def handle_service_call(service_call):
+async def handle_service_call(
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    service_call
+):
     LOGGER.debug("Handling service call: %s", service_call.data)
     
+    client = TeslaFiClient(
+        config_entry.data[CONF_API_KEY],
+        hass.data[DOMAIN][HTTP_CLIENT],
+    )
+    coordinator = TeslaFiCoordinator(hass, client)
+    
     params = service_call.data.copy()
-    await TeslaFiCoordinator.execute_command(cmd=params.pop("command", ""), kwargs=params)
+    await coordinator.execute_command(cmd=params.pop("command", ""), kwargs=params)
 
 async def async_setup_entry(
     hass: HomeAssistant,
