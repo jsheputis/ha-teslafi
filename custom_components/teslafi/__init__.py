@@ -37,8 +37,14 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up the integration."""
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][HTTP_CLIENT] = create_async_httpx_client(hass)
+    
+    hass.services.async_register(DOMAIN, "execute_command", handle_service_call)
+    
     return True
 
+async def handle_service_call(service_call):
+    LOGGER.debug("Handling service call: %s", service_call)
+    await TeslaFiCoordinator.execute_command("")
 
 async def async_setup_entry(
     hass: HomeAssistant,
