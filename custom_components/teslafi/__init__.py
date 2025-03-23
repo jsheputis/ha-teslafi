@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_API_KEY, Platform
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.helpers import device_registry as dr
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.device_registry import DeviceEntry
@@ -37,9 +37,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up the integration."""
     hass.data.setdefault(DOMAIN, {})
     hass.data[DOMAIN][HTTP_CLIENT] = create_async_httpx_client(hass)
-    
-    hass.services.async_register(DOMAIN, "execute_command", handle_service_call)
-    
+        
     return True
 
 async def handle_service_call(
@@ -76,8 +74,27 @@ async def async_setup_entry(
         entry,
         PLATFORMS,
     )
+    
     # Everything succeeded, now tell the listeners to update their states
     coordinator.async_update_listeners()
+    
+    
+    # Services
+    async def execute_command(call: ServiceCall):
+        params = call.data.copy()
+        await coordinator.execute_command(
+            cmd=params.pop("command", ""),
+            kwargs=params
+        )
+    
+    hass.services.async_register(
+        DOMAIN,
+        "execute_command",
+        execute_command
+    )
+    
+
+    
     return True
 
 
